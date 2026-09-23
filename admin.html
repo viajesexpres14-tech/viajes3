@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrador - Reservas</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 20px rgba(0,0,0,.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-logo span {
+            font-size: 30px;
+        }
+
+        .admin-logo h2 {
+            font-size: 21px;
+        }
+
+        .admin-logo small {
+            display: block;
+            color: #cbd5e1;
+            margin-top: 3px;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .admin-nav button {
+            border: none;
+            background: transparent;
+            color: white;
+            padding: 11px 14px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-nav button:hover {
+            background: rgba(255,255,255,.12);
+        }
+
+        .logout {
+            background: #ef4444 !important;
+        }
+
+        .container {
+            width: min(1250px, 94%);
+            margin: 30px auto 60px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #64748b;
+        }
+
+        /* ESTADÍSTICAS SUPERIORES */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 7px 25px rgba(15,23,42,.07);
+            border: 1px solid #e8edf5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            right: -25px;
+            top: -25px;
+            background: #dbeafe;
+            border-radius: 50%;
+        }
+
+        .stat-icon {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* VIAJES */
+
+        .section {
+            background: white;
+            border-radius: 22px;
+            padding: 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 7px 25px rgba(15,23,42,.07);
+            border: 1px solid #e8edf5;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+        }
+
+        .section-title p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-controls button {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .calendar-controls button:hover {
+            background: #dbeafe;
+        }
+
+        #adminCurrentMonth {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .calendar-weekdays,
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 9px;
+        }
+
+        .calendar-weekdays div {
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            min-height: 68px;
+            border: 2px solid #e5e7eb;
+            background: #f8fafc;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: .2s;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            border-color: #2563eb;
+        }
+
+        .calendar-day.open {
+            background: #ecfdf5;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+
+        .calendar-day.closed {
+            color: #94a3b8;
+        }
+
+        .calendar-day.selected {
+            border: 3px solid #2563eb;
+            box-shadow: 0 0 0 3px #dbeafe;
+        }
+
+        .calendar-day.open::after {
+            content: "Disponible";
+            display: block;
+            font-size: 9px;
+            margin-top: 6px;
+            color: #16a34a;
+        }
+
+        .travel-editor {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 17px;
+            background: linear-gradient(135deg, #f8fafc, #eff6ff);
+            border: 1px solid #dbeafe;
+        }
+
+        .selected-date {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        .travel-editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #475569;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: white;
+
+            /* ÚNICO CAMBIO */
+            color: #000000;
+        }
+
+        .field input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #dbeafe;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 9px;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        /* ESTADÍSTICAS DE VIAJES */
+
+        .travel-statistics {
+            margin-top: 30px;
+        }
+
+        .travel-statistics h2 {
+            margin-bottom: 6px;
+        }
+
+        .travel-statistics > p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .travel-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .travel-stat {
+            padding: 22px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f8fafc, #eef2ff);
+            border: 1px solid #e2e8f0;
+        }
+
+        .travel-stat .icon {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .travel-stat strong {
+            display: block;
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .travel-stat span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* TABLAS */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 14px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-top: 1px solid #edf2f7;
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.paid {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .status.cancelled {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            outline: none;
+        }
+
+        @media (max-width: 900px) {
+            .stats,
+            .travel-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .travel-editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats,
+            .travel-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .calendar {
+                gap: 5px;
+            }
+
+            .calendar-day {
+                min-height: 50px;
+            }
+
+            .calendar-day.open::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-logo">
+        <span>✈️</span>
+
+        <div>
+            <h2>Panel Administrador</h2>
+            <small>Gestión de reservas y viajes</small>
+        </div>
+    </div>
+
+    <nav class="admin-nav">
+        <button onclick="location.href='#viajes'">📅 Viajes</button>
+        <button onclick="location.href='#reservas'">🎫 Reservas</button>
+        <button onclick="location.href='#usuarios'">👥 Usuarios</button>
+        <button class="logout" id="adminLogoutBtn">Cerrar sesión</button>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Panel de control</h1>
+        <p>Administra destinos, precios, fechas y reservas.</p>
+    </div>
+
+
+    <!-- ESTADÍSTICAS GENERALES -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <h3 id="totalUsers">0</h3>
+            <p>Usuarios registrados</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🎫</div>
+            <h3 id="totalReservations">0</h3>
+            <p>Reservas realizadas</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">💳</div>
+            <h3 id="paidReservations">0</h3>
+            <p>Reservas pagadas</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <h3 id="availableDates">0</h3>
+            <p>Viajes disponibles</p>
+        </div>
+
+    </section>
+
+
+    <!-- GESTIÓN DE VIAJES -->
+
+    <section class="section" id="viajes">
+
+        <div class="section-title">
+
+            <div>
+                <h2>📍 Gestión de viajes</h2>
+                <p>
+                    Selecciona una fecha para configurar el destino y precio.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="calendar-controls">
+
+            <button id="adminPreviousMonth">‹</button>
+
+            <span id="adminCurrentMonth">
+                Mes
+            </span>
+
+            <button id="adminNextMonth">›</button>
+
+        </div>
+
+
+        <div class="calendar-weekdays">
+
+            <div>LUN</div>
+            <div>MAR</div>
+            <div>MIÉ</div>
+            <div>JUE</div>
+            <div>VIE</div>
+            <div>SÁB</div>
+            <div>DOM</div>
+
+        </div>
+
+
+        <div id="adminCalendar" class="calendar"></div>
+
+
+        <!-- EDITOR -->
+
+        <div class="travel-editor">
+
+            <div class="selected-date">
+                Fecha seleccionada:
+                <strong id="selectedDateText">
+                    Ninguna
+                </strong>
+            </div>
+
+
+            <div class="travel-editor-grid">
+
+                <div class="field">
+
+                    <label for="adminDestination">
+                        📍 Destino
+                    </label>
+
+                    <input
+                        type="text"
+                        id="adminDestination"
+                        placeholder="Ej: Cartagena"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="adminPrice">
+                        💰 Precio por persona
+                    </label>
+
+                    <input
+                        type="number"
+                        id="adminPrice"
+                        min="0"
+                        step="1000"
+                        placeholder="Ej: 250000"
+                    >
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        class="btn btn-primary"
+                        id="openDateBtn"
+                    >
+                        💾 Guardar viaje
+                    </button>
+
+                    <button
+                        class="btn btn-danger"
+                        id="closeDateBtn"
+                    >
+                        🔒 Cerrar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ESTADÍSTICAS DE VIAJES -->
+
+        <div class="travel-statistics">
+
+            <h2>📊 Estadísticas de viajes</h2>
+
+            <p>
+                Resumen de los viajes configurados por el administrador.
+            </p>
+
+
+            <div class="travel-stats-grid">
+
+                <div class="travel-stat">
+                    <div class="icon">✈️</div>
+                    <strong id="statTravelCount">0</strong>
+                    <span>Viajes disponibles</span>
+                </div>
+
+                <div class="travel-stat">
+                    <div class="icon">👤</div>
+                    <strong id="statPeopleCount">0</strong>
+                    <span>Personas reservadas</span>
+                </div>
+
+                <div class="travel-stat">
+                    <div class="icon">🎫</div>
+                    <strong id="statReservationCount">0</strong>
+                    <span>Reservas de viajes</span>
+                </div>
+
+                <div class="travel-stat">
+                    <div class="icon">💰</div>
+                    <strong id="statIncome">$0</strong>
+                    <span>Ingresos registrados</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESERVAS -->
+
+    <section class="section" id="reservas">
+
+        <div class="section-title">
+
+            <div>
+                <h2>🎫 Reservas</h2>
+                <p>Consulta y administra las reservas de los usuarios.</p>
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <input
+                type="text"
+                id="searchReservations"
+                placeholder="Buscar usuario o correo..."
+            >
+
+            <select id="reservationStatusFilter">
+
+                <option value="all">
+                    Todas
+                </option>
+
+                <option value="paid">
+                    Pagadas
+                </option>
+
+                <option value="pending">
+                    Pendientes
+                </option>
+
+                <option value="cancelled">
+                    Canceladas
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Destino</th>
+                        <th>Fecha</th>
+                        <th>Personas</th>
+                        <th>Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="reservationsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- USUARIOS -->
+
+    <section class="section" id="usuarios">
+
+        <div class="section-title">
+
+            <div>
+                <h2>👥 Usuarios registrados</h2>
+                <p>Personas que tienen una cuenta en la plataforma.</p>
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Reservas</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="usersTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reservar viaje</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #222;
+
+        }
+
+
+        /* ================================
+           HEADER
+           ================================ */
+
+        .header {
+
+            height: 70px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 25px;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,.08);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+        }
+
+
+        .logo {
+
+            color: #2196f3;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+        }
+
+
+        .menu-btn {
+
+            width: 45px;
+
+            height: 45px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #2196f3;
+
+            color: white;
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+        }
+
+
+        .menu-btn:hover {
+
+            background: #1976d2;
+
+        }
+
+
+        .menu {
+
+            position: absolute;
+
+            top: 70px;
+
+            right: 20px;
+
+            width: 230px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.18);
+
+            padding: 10px;
+
+            display: none;
+
+        }
+
+
+        .menu.active {
+
+            display: block;
+
+        }
+
+
+        .menu a,
+        .menu button {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            background: transparent;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            color: #333;
+
+            font-size: 15px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+        }
+
+
+        .menu a:hover,
+        .menu button:hover {
+
+            background: #f0f5ff;
+
+            color: #2196f3;
+
+        }
+
+
+        .menu .cerrar {
+
+            color: #e53935;
+
+        }
+
+
+        /* ================================
+           CONTENEDOR
+           ================================ */
+
+        .contenido {
+
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+            padding: 20px;
+
+        }
+
+
+        .bienvenida {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .bienvenida h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .bienvenida p {
+
+            color: #777;
+
+        }
+
+
+        /* ================================
+           TARJETAS
+           ================================ */
+
+        .card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,.08);
+
+        }
+
+
+        .card h2 {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* ================================
+           CALENDARIO
+           ================================ */
+
+        .calendar-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .calendar-header button {
+
+            border: none;
+
+            background: #2196f3;
+
+            color: white;
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 20px;
+
+        }
+
+
+        .calendar-header button:hover {
+
+            background: #1976d2;
+
+        }
+
+
+        .calendar-header h3 {
+
+            font-size: 21px;
+
+        }
+
+
+        .weekdays {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            color: #777;
+
+        }
+
+
+        .calendar {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+
+        }
+
+
+        .calendar-day {
+
+            min-height: 55px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition: .2s;
+
+        }
+
+
+        .calendar-day.available {
+
+            background: #dff5e4;
+
+            color: #16803c;
+
+            font-weight: bold;
+
+        }
+
+
+        .calendar-day.available:hover {
+
+            transform: translateY(-2px);
+
+            background: #c9eed3;
+
+        }
+
+
+        .calendar-day.unavailable {
+
+            background: #f0f0f0;
+
+            color: #aaa;
+
+            cursor: default;
+
+        }
+
+
+        .calendar-day.selected {
+
+            outline: 3px solid #2196f3;
+
+            background: #2196f3;
+
+            color: white;
+
+        }
+
+
+        .calendar-day.empty {
+
+            background: transparent;
+
+            cursor: default;
+
+        }
+
+
+        /* ================================
+           INFORMACIÓN DEL VIAJE
+           ================================ */
+
+        .travel-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .info-box {
+
+            background: #f5f8fc;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+        }
+
+
+        .info-label {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .info-value {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        .price {
+
+            color: #16803c;
+
+        }
+
+
+        /* ================================
+           FORMULARIO
+           ================================ */
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+        }
+
+
+        /*
+         * IMPORTANTE:
+         * NO EXISTE INPUT PARA PRECIO.
+         * EL PRECIO VIENE DEL ADMINISTRADOR.
+         */
+
+
+        .total-box {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #eef7ff;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+        }
+
+
+        .total-box span {
+
+            display: block;
+
+            color: #777;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .total-box strong {
+
+            font-size: 28px;
+
+            color: #2196f3;
+
+        }
+
+
+        .btn-reservar {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 20px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #2196f3;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .btn-reservar:hover {
+
+            background: #1976d2;
+
+        }
+
+
+        .btn-reservar:disabled {
+
+            background: #aaa;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* ================================
+           MIS RESERVAS
+           ================================ */
+
+        .reserva {
+
+            background: #f7f9fc;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            border-left: 5px solid #2196f3;
+
+        }
+
+
+        .reserva h3 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .reserva p {
+
+            margin: 6px 0;
+
+            color: #555;
+
+        }
+
+
+        .estado {
+
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #fff3cd;
+
+            color: #856404;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+        }
+
+
+        .estado.pagado {
+
+            background: #d4edda;
+
+            color: #155724;
+
+        }
+
+
+        .estado.cancelado {
+
+            background: #f8d7da;
+
+            color: #721c24;
+
+        }
+
+
+        .mensaje {
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .travel-info {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .calendar {
+
+                gap: 4px;
+
+            }
+
+
+            .calendar-day {
+
+                min-height: 45px;
+
+            }
+
+
+            .weekdays {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================
+         HEADER
+         ================================ -->
+
+    <header class="header">
+
+        <div class="logo">
+            ✈️ Reservas
+        </div>
+
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+
+        <nav
+            class="menu"
+            id="menu"
+        >
+
+            <a href="usuario.html">
+                🏠 Inicio
+            </a>
+
+
+            <a href="#reservar">
+                📅 Reservar viaje
+            </a>
+
+
+            <a href="#reservas">
+                🎫 Mis reservas
+            </a>
+
+
+            <a href="perfil.html">
+                👤 Mi perfil
+            </a>
+
+
+            <button
+                class="cerrar"
+                id="cerrarSesion"
+                type="button"
+            >
+                🚪 Cerrar sesión
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <main class="contenido">
+
+
+        <!-- ================================
+             BIENVENIDA
+             ================================ -->
+
+        <section class="bienvenida">
+
+            <h1>
+                ¡Bienvenido, <span id="nombreUsuario">
+                    Usuario
+                </span>!
+            </h1>
+
+            <p>
+                Selecciona una fecha disponible
+                para reservar tu viaje.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================================
+             CALENDARIO
+             ================================ -->
+
+        <section class="card">
+
+            <h2>
+                📅 Fechas disponibles
+            </h2>
+
+
+            <div class="calendar-header">
+
+                <button
+                    id="previousMonth"
+                    type="button"
+                >
+                    ‹
+                </button>
+
+
+                <h3 id="currentMonth">
+                    Mes
+                </h3>
+
+
+                <button
+                    id="nextMonth"
+                    type="button"
+                >
+                    ›
+                </button>
+
+            </div>
+
+
+            <div class="weekdays">
+
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+                <div>Dom</div>
+
+            </div>
+
+
+            <div
+                class="calendar"
+                id="calendar"
+            ></div>
+
+        </section>
+
+
+
+        <!-- ================================
+             RESERVAR
+             ================================ -->
+
+        <section
+            class="card"
+            id="reservar"
+        >
+
+            <h2>
+                🎫 Reservar viaje
+            </h2>
+
+
+            <div class="travel-info">
+
+
+                <!-- DESTINO -->
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        📍 Destino
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="destino"
+                    >
+                        Selecciona una fecha
+                    </div>
+
+                </div>
+
+
+                <!-- PRECIO -->
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        💰 Precio por persona
+                    </div>
+
+                    <div
+                        class="info-value price"
+                        id="precioPersona"
+                    >
+                        Selecciona una fecha
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FECHA -->
+
+            <div class="form-group">
+
+                <label>
+                    📅 Fecha seleccionada
+                </label>
+
+                <input
+                    type="text"
+                    id="fechaSeleccionada"
+                    readonly
+                    placeholder="Selecciona una fecha"
+                >
+
+            </div>
+
+
+
+            <!-- PERSONAS -->
+
+            <div class="form-group">
+
+                <label for="cantidadPersonas">
+                    👥 Número de personas
+                </label>
+
+                <input
+                    type="number"
+                    id="cantidadPersonas"
+                    min="1"
+                    value="1"
+                    placeholder="Cantidad de personas"
+                >
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="total-box">
+
+                <span>
+                    Total del viaje
+                </span>
+
+                <strong id="total">
+                    $0
+                </strong>
+
+            </div>
+
+
+            <button
+                class="btn-reservar"
+                id="btnReservar"
+                type="button"
+                disabled
+            >
+                Confirmar reserva
+            </button>
+
+
+            <div
+                class="mensaje"
+                id="mensaje"
+            ></div>
+
+        </section>
+
+
+
+        <!-- ================================
+             MIS RESERVAS
+             ================================ -->
+
+        <section
+            class="card"
+            id="reservas"
+        >
+
+            <h2>
+                🎟️ Mis reservas
+            </h2>
+
+
+            <div id="listaReservas">
+
+                <p>
+                    No tienes reservas todavía.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script>
+
+        /* =========================================
+           COMPROBAR USUARIO
+           ========================================= */
+
+        const usuario =
+            JSON.parse(
+                localStorage.getItem(
+                    "currentUser"
+                )
+            );
+
+
+        if (!usuario) {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        /* =========================================
+           DATOS
+           ========================================= */
+
+        let availability =
+            JSON.parse(
+                localStorage.getItem(
+                    "travelAvailability"
+                )
+            ) || {};
+
+
+        let reservations =
+            JSON.parse(
+                localStorage.getItem(
+                    "travelReservations"
+                )
+            ) || [];
+
+
+        let selectedDate = null;
+
+        let selectedTravel = null;
+
+        let currentDate = new Date();
+
+
+        /* =========================================
+           ELEMENTOS
+           ========================================= */
+
+        const nombreUsuario =
+            document.getElementById(
+                "nombreUsuario"
+            );
+
+        const calendar =
+            document.getElementById(
+                "calendar"
+            );
+
+        const currentMonth =
+            document.getElementById(
+                "currentMonth"
+            );
+
+        const destino =
+            document.getElementById(
+                "destino"
+            );
+
+        const precioPersona =
+            document.getElementById(
+                "precioPersona"
+            );
+
+        const fechaSeleccionada =
+            document.getElementById(
+                "fechaSeleccionada"
+            );
+
+        const cantidadPersonas =
+            document.getElementById(
+                "cantidadPersonas"
+            );
+
+        const total =
+            document.getElementById(
+                "total"
+            );
+
+        const btnReservar =
+            document.getElementById(
+                "btnReservar"
+            );
+
+        const mensaje =
+            document.getElementById(
+                "mensaje"
+            );
+
+        const listaReservas =
+            document.getElementById(
+                "listaReservas"
+            );
+
+
+        if (usuario && nombreUsuario) {
+
+            nombreUsuario.textContent =
+                usuario.nombre;
+
+        }
+
+
+        /* =========================================
+           MESES
+           ========================================= */
+
+        const monthNames = [
+
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+
+        ];
+
+
+        /* =========================================
+           FORMATEAR FECHA
+           ========================================= */
+
+        function formatDate(date) {
+
+            const year =
+                date.getFullYear();
+
+            const month =
+                String(
+                    date.getMonth() + 1
+                ).padStart(2, "0");
+
+            const day =
+                String(
+                    date.getDate()
+                ).padStart(2, "0");
+
+
+            return `${year}-${month}-${day}`;
+
+        }
+
+
+        /* =========================================
+           FORMATO DINERO
+           ========================================= */
+
+        function formatMoney(value) {
+
+            return Number(value).toLocaleString(
+                "es-CO",
+                {
+                    style: "currency",
+                    currency: "COP",
+                    maximumFractionDigits: 0
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           DIBUJAR CALENDARIO
+           ========================================= */
+
+        function renderCalendar() {
+
+            calendar.innerHTML = "";
+
+
+            const year =
+                currentDate.getFullYear();
+
+            const month =
+                currentDate.getMonth();
+
+
+            currentMonth.textContent =
+                `${monthNames[month]} ${year}`;
+
+
+            const firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                );
+
+
+            const lastDay =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                );
+
+
+            let startingDay =
+                firstDay.getDay();
+
+
+            startingDay =
+                startingDay === 0
+                    ? 6
+                    : startingDay - 1;
+
+
+            /* ESPACIOS */
+
+            for (
+                let i = 0;
+                i < startingDay;
+                i++
+            ) {
+
+                const empty =
+                    document.createElement(
+                        "div"
+                    );
+
+                empty.className =
+                    "calendar-day empty";
+
+                calendar.appendChild(empty);
+
+            }
+
+
+            /* DÍAS */
+
+            for (
+                let day = 1;
+                day <= lastDay.getDate();
+                day++
+            ) {
+
+                const date =
+                    new Date(
+                        year,
+                        month,
+                        day
+                    );
+
+
+                const dateString =
+                    formatDate(date);
+
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.type = "button";
+
+                button.className =
+                    "calendar-day";
+
+
+                button.textContent =
+                    day;
+
+
+                /*
+                 * LEER INFORMACIÓN DEL ADMIN
+                 */
+
+                const info =
+                    availability[
+                        dateString
+                    ];
+
+
+                /*
+                 * SOLO SE CONSIDERA DISPONIBLE
+                 * SI EL ADMINISTRADOR LA ABRIÓ
+                 */
+
+                const isAvailable =
+                    info &&
+                    typeof info === "object" &&
+                    info.disponible === true &&
+                    info.destino &&
+                    Number(info.precioPorPersona) > 0;
+
+
+                if (isAvailable) {
+
+                    button.classList.add(
+                        "available"
+                    );
+
+
+                    button.title =
+                        `${info.destino} - ${
+                            formatMoney(
+                                info.precioPorPersona
+                            )
+                        }`;
+
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            selectDate(
+                                dateString
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    button.classList.add(
+                        "unavailable"
+                    );
+
+                    button.disabled = true;
+
+                }
+
+
+                if (
+                    selectedDate ===
+                    dateString
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                calendar.appendChild(
+                    button
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           SELECCIONAR FECHA
+           ========================================= */
+
+        function selectDate(dateString) {
+
+            /*
+             * Volvemos a leer localStorage.
+             * Así usamos siempre el precio actual
+             * establecido por el administrador.
+             */
+
+            availability =
+                JSON.parse(
+                    localStorage.getItem(
+                        "travelAvailability"
+                    )
+                ) || {};
+
+
+            const info =
+                availability[
+                    dateString
+                ];
+
+
+            /*
+             * VALIDAR QUE SIGA DISPONIBLE
+             */
+
+            if (
+                !info ||
+                typeof info !== "object" ||
+                info.disponible !== true ||
+                !info.destino ||
+                Number(info.precioPorPersona) <= 0
+            ) {
+
+                alert(
+                    "Esta fecha ya no está disponible."
+                );
+
+                renderCalendar();
+
+                return;
+
+            }
+
+
+            selectedDate =
+                dateString;
+
+
+            selectedTravel = {
+
+                destino:
+                    info.destino,
+
+                precioPorPersona:
+                    Number(
+                        info.precioPorPersona
+                    )
+
+            };
+
+
+            /*
+             * MOSTRAR INFORMACIÓN
+             */
+
+            destino.textContent =
+                selectedTravel.destino;
+
+
+            precioPersona.textContent =
+                formatMoney(
+                    selectedTravel
+                        .precioPorPersona
+                );
+
+
+            fechaSeleccionada.value =
+                selectedDate;
+
+
+            mensaje.textContent = "";
+
+
+            btnReservar.disabled =
+                false;
+
+
+            calculateTotal();
+
+
+            renderCalendar();
+
+        }
+
+
+        /* =========================================
+           CALCULAR TOTAL
+           ========================================= */
+
+        function calculateTotal() {
+
+            if (!selectedTravel) {
+
+                total.textContent =
+                    "$0";
+
+                return;
+
+            }
+
+
+            const people =
+                Number(
+                    cantidadPersonas.value
+                );
+
+
+            if (
+                !Number.isFinite(people) ||
+                people < 1
+            ) {
+
+                total.textContent =
+                    "$0";
+
+                return;
+
+            }
+
+
+            /*
+             * EL PRECIO VIENE EXCLUSIVAMENTE
+             * DEL ADMINISTRADOR.
+             */
+
+            const totalPrice =
+                people *
+                selectedTravel
+                    .precioPorPersona;
+
+
+            total.textContent =
+                formatMoney(
+                    totalPrice
+                );
+
+        }
+
+
+        cantidadPersonas.addEventListener(
+            "input",
+            calculateTotal
+        );
+
+
+        /* =========================================
+           CONFIRMAR RESERVA
+           ========================================= */
+
+        btnReservar.addEventListener(
+            "click",
+            () => {
+
+                /*
+                 * VOLVER A LEER EL PRECIO
+                 * DEL ADMINISTRADOR.
+                 */
+
+                availability =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "travelAvailability"
+                        )
+                    ) || {};
+
+
+                const info =
+                    availability[
+                        selectedDate
+                    ];
+
+
+                /*
+                 * VALIDAR FECHA
+                 */
+
+                if (
+                    !selectedDate ||
+                    !info ||
+                    typeof info !== "object" ||
+                    info.disponible !== true
+                ) {
+
+                    alert(
+                        "La fecha seleccionada ya no está disponible."
+                    );
+
+                    renderCalendar();
+
+                    return;
+
+                }
+
+
+                /*
+                 * TOMAR PRECIO DEL ADMIN
+                 */
+
+                const precioAdmin =
+                    Number(
+                        info.precioPorPersona
+                    );
+
+
+                if (
+                    !Number.isFinite(precioAdmin) ||
+                    precioAdmin <= 0
+                ) {
+
+                    alert(
+                        "Esta fecha no tiene un precio válido configurado por el administrador."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * CANTIDAD DE PERSONAS
+                 */
+
+                const cantidad =
+                    Number(
+                        cantidadPersonas.value
+                    );
+
+
+                if (
+                    !Number.isInteger(cantidad) ||
+                    cantidad < 1
+                ) {
+
+                    alert(
+                        "Ingresa una cantidad válida de personas."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * CALCULAR TOTAL
+                 */
+
+                const precioTotal =
+                    cantidad *
+                    precioAdmin;
+
+
+                /*
+                 * CREAR RESERVA
+                 *
+                 * IMPORTANTE:
+                 * El precio NO viene de un input.
+                 * Viene directamente de travelAvailability.
+                 */
+
+                const nuevaReserva = {
+
+                    id:
+                        Date.now(),
+
+                    userId:
+                        usuario.id,
+
+                    userName:
+                        usuario.nombre,
+
+                    userEmail:
+                        usuario.email,
+
+                    destination:
+                        info.destino,
+
+                    date:
+                        selectedDate,
+
+                    people:
+                        cantidad,
+
+                    pricePerPerson:
+                        precioAdmin,
+
+                    totalPrice:
+                        precioTotal,
+
+                    paymentStatus:
+                        "pending",
+
+                    reservationStatus:
+                        "active",
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                reservations.push(
+                    nuevaReserva
+                );
+
+
+                localStorage.setItem(
+                    "travelReservations",
+                    JSON.stringify(
+                        reservations
+                    )
+                );
+
+
+                mensaje.textContent =
+                    "✅ Reserva creada correctamente.";
+
+                mensaje.style.color =
+                    "#16803c";
+
+
+                renderReservations();
+
+
+                cantidadPersonas.value =
+                    1;
+
+
+                calculateTotal();
+
+            }
+        );
+
+
+        /* =========================================
+           MOSTRAR MIS RESERVAS
+           ========================================= */
+
+        function renderReservations() {
+
+            reservations =
+                JSON.parse(
+                    localStorage.getItem(
+                        "travelReservations"
+                    )
+                ) || [];
+
+
+            const myReservations =
+                reservations.filter(
+                    reservation =>
+                        reservation.userId ===
+                        usuario.id
+                );
+
+
+            if (
+                myReservations.length === 0
+            ) {
+
+                listaReservas.innerHTML = `
+
+                    <p>
+                        No tienes reservas todavía.
+                    </p>
+
+                `;
+
+                return;
+
+            }
+
+
+            listaReservas.innerHTML = "";
+
+
+            myReservations
+                .slice()
+                .reverse()
+                .forEach(
+                    reservation => {
+
+                        let statusText =
+                            "Pendiente";
+
+                        let statusClass =
+                            "";
+
+
+                        if (
+                            reservation.paymentStatus ===
+                            "paid"
+                        ) {
+
+                            statusText =
+                                "Pagado";
+
+                            statusClass =
+                                "pagado";
+
+                        }
+
+
+                        if (
+                            reservation.paymentStatus ===
+                            "cancelled"
+                        ) {
+
+                            statusText =
+                                "Cancelado";
+
+                            statusClass =
+                                "cancelado";
+
+                        }
+
+
+                        const div =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        div.className =
+                            "reserva";
+
+
+                        div.innerHTML = `
+
+                            <h3>
+                                ✈️ ${
+                                    reservation.destination
+                                }
+                            </h3>
+
+                            <p>
+                                📅 Fecha:
+                                ${
+                                    reservation.date
+                                }
+                            </p>
+
+                            <p>
+                                👥 Personas:
+                                ${
+                                    reservation.people
+                                }
+                            </p>
+
+                            <p>
+                                💰 Precio por persona:
+                                ${
+                                    formatMoney(
+                                        reservation.pricePerPerson
+                                    )
+                                }
+                            </p>
+
+                            <p>
+                                💵 Total:
+                                <strong>
+                                    ${
+                                        formatMoney(
+                                            reservation.totalPrice
+                                        )
+                                    }
+                                </strong>
+                            </p>
+
+                            <span
+                                class="estado ${statusClass}"
+                            >
+                                ${statusText}
+                            </span>
+
+                        `;
+
+
+                        listaReservas.appendChild(
+                            div
+                        );
+
+                    }
+                );
+
+        }
+
+
+        /* =========================================
+           CAMBIAR MES
+           ========================================= */
+
+        document
+            .getElementById(
+                "previousMonth"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() - 1
+                    );
+
+                    renderCalendar();
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                "nextMonth"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    currentDate.setMonth(
+                        currentDate.getMonth() + 1
+                    );
+
+                    renderCalendar();
+
+                }
+            );
+
+
+        /* =========================================
+           MENÚ
+           ========================================= */
+
+        const menuBtn =
+            document.getElementById(
+                "menuBtn"
+            );
+
+        const menu =
+            document.getElementById(
+                "menu"
+            );
+
+
+        menuBtn.addEventListener(
+            "click",
+            () => {
+
+                menu.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    !menu.contains(
+                        event.target
+                    ) &&
+                    !menuBtn.contains(
+                        event.target
+                    )
+                ) {
+
+                    menu.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           CERRAR SESIÓN
+           ========================================= */
+
+        document
+            .getElementById(
+                "cerrarSesion"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        /* =========================================
+           INICIAR
+           ========================================= */
+
+        renderCalendar();
+
+        renderReservations();
+
+    </script>
+
+</body>
+
+</html>

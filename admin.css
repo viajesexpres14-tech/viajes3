@@ -1,0 +1,373 @@
+/* =========================================
+   PANEL ADMINISTRADOR
+   ========================================= */
+
+.admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    min-height: 75px;
+    padding: 0 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #111827;
+    color: white;
+
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+.admin-header .logo {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.admin-header nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.admin-header nav a {
+    color: #cbd5e1;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.admin-header nav a:hover {
+    color: white;
+}
+
+.admin-header .btn-logout {
+    background: #7f1d1d;
+    color: #fecaca;
+}
+
+.admin-header .btn-logout:hover {
+    background: #991b1b;
+}
+
+
+/* =========================================
+   CONTENIDO ADMIN
+   ========================================= */
+
+.admin-main {
+    width: min(1400px, 92%);
+    margin: auto;
+}
+
+.admin-section {
+    padding: 60px 0;
+}
+
+.admin-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.admin-title > span {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+
+    background: #e0e7ff;
+    font-size: 24px;
+}
+
+.admin-title h1,
+.admin-title h2 {
+    color: #111827;
+    margin-bottom: 5px;
+}
+
+.admin-title h1 {
+    font-size: 32px;
+}
+
+.admin-title h2 {
+    font-size: 27px;
+}
+
+.admin-title p {
+    color: #64748b;
+}
+
+
+/* =========================================
+   ESTADÍSTICAS
+   ========================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+
+    transition: 0.25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+}
+
+.stat-card > span {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+
+    font-size: 25px;
+}
+
+.stat-card p {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    font-size: 28px;
+    color: #111827;
+}
+
+
+/* =========================================
+   CALENDARIO ADMIN
+   ========================================= */
+
+.admin-calendar-card {
+    max-width: 850px;
+    margin-bottom: 25px;
+}
+
+.admin-calendar .calendar-day {
+    min-height: 55px;
+}
+
+.admin-calendar .calendar-day.open {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.admin-calendar .calendar-day.closed {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.admin-calendar .calendar-day.selected {
+    background: #4f46e5;
+    color: white;
+}
+
+
+/* =========================================
+   BOTONES ADMIN
+   ========================================= */
+
+.date-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-success,
+.btn-danger {
+    border: none;
+    padding: 13px 20px;
+    border-radius: 11px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.btn-success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.btn-success:hover {
+    background: #22c55e;
+    color: white;
+}
+
+.btn-danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.btn-danger:hover {
+    background: #ef4444;
+    color: white;
+}
+
+
+/* =========================================
+   FILTROS
+   ========================================= */
+
+.reservation-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.reservation-filters input,
+.reservation-filters select {
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 11px;
+    background: white;
+    outline: none;
+}
+
+.reservation-filters input {
+    flex: 1;
+}
+
+.reservation-filters input:focus,
+.reservation-filters select:focus {
+    border-color: #4f46e5;
+}
+
+
+/* =========================================
+   TABLAS ADMIN
+   ========================================= */
+
+.admin-reservations,
+.users-table {
+    background: white;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+}
+
+.admin-reservations table,
+.users-table table {
+    min-width: 850px;
+}
+
+.admin-reservations th,
+.users-table th {
+    background: #111827;
+    color: white;
+}
+
+.admin-reservations td,
+.users-table td {
+    background: white;
+}
+
+.admin-reservations tr:hover td,
+.users-table tr:hover td {
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1100px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-header {
+        padding: 15px 4%;
+    }
+
+    .admin-header nav {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 750px) {
+
+    .admin-header {
+        position: relative;
+        flex-direction: column;
+        gap: 15px;
+        padding: 18px;
+    }
+
+    .admin-header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reservation-filters {
+        flex-direction: column;
+    }
+
+    .admin-section {
+        padding: 45px 0;
+    }
+
+    .admin-title h1 {
+        font-size: 26px;
+    }
+
+    .admin-title h2 {
+        font-size: 23px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .admin-main {
+        width: 94%;
+    }
+
+    .admin-title > span {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .date-actions {
+        flex-direction: column;
+    }
+
+    .btn-success,
+    .btn-danger {
+        width: 100%;
+    }
+}

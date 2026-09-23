@@ -1,0 +1,478 @@
+/* =========================================
+   ESTILOS GENERALES
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================================
+   LOGIN Y REGISTRO
+   ========================================= */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background:
+        radial-gradient(circle at top left, #dbeafe, transparent 35%),
+        radial-gradient(circle at bottom right, #bfdbfe, transparent 35%),
+        #f8fafc;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 42px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e5e7eb;
+    animation: cardAppear 0.6s ease;
+}
+
+.login-card h1 {
+    text-align: center;
+    color: #1d4ed8;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.login-card > p {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #334155;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    outline: none;
+    background: #fff;
+    color: #1f2937;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+}
+
+.input-group textarea {
+    resize: vertical;
+}
+
+.btn-primary {
+    border: none;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+}
+
+.login-register {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.login-register p {
+    margin-bottom: 8px !important;
+    color: #64748b;
+}
+
+.login-register a {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   BOTÓN CERRAR SESIÓN
+   ========================================= */
+
+.btn-logout {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: 0.25s;
+}
+
+.btn-logout:hover {
+    background: #fecaca;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   CALENDARIO
+   ========================================= */
+
+.calendar-card,
+.booking-card,
+.admin-calendar-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.calendar-header h3 {
+    font-size: 19px;
+    color: #1e293b;
+}
+
+.calendar-header button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 25px;
+    transition: 0.2s;
+}
+
+.calendar-header button:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.calendar-weekdays span {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    padding: 8px 0;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 7px;
+}
+
+.calendar-day {
+    min-height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.calendar-day:hover {
+    background: #dbeafe;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.calendar-day.available {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.calendar-day.unavailable {
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.calendar-day.selected {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+.calendar-day.today {
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.calendar-legend div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.calendar-legend span {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.calendar-legend .available {
+    background: #22c55e;
+}
+
+.calendar-legend .unavailable {
+    background: #cbd5e1;
+}
+
+.calendar-legend .selected {
+    background: #2563eb;
+}
+
+
+/* =========================================
+   RESERVAS
+   ========================================= */
+
+.reservations-list {
+    display: grid;
+    gap: 15px;
+}
+
+.reservation-item {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.reservation-item h3 {
+    margin-bottom: 8px;
+    color: #1e293b;
+}
+
+.reservation-item p {
+    color: #64748b;
+    margin: 5px 0;
+}
+
+
+/* =========================================
+   PERFIL
+   ========================================= */
+
+.profile-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #dbeafe;
+    font-size: 40px;
+}
+
+.profile-information {
+    display: grid;
+    gap: 15px;
+}
+
+.profile-information span {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.profile-information strong {
+    color: #1e293b;
+}
+
+
+/* =========================================
+   TABLAS
+   ========================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    text-align: left;
+    padding: 15px;
+}
+
+td {
+    padding: 15px;
+    border-top: 1px solid #e5e7eb;
+    color: #475569;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   ANIMACIONES
+   ========================================= */
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .login-card {
+        padding: 28px 22px;
+    }
+
+    .calendar-card,
+    .booking-card,
+    .admin-calendar-card {
+        padding: 18px;
+    }
+
+    .calendar-day {
+        min-height: 40px;
+        font-size: 13px;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-information {
+        width: 100%;
+    }
+
+    .admin-reservations,
+    .users-table {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 700px;
+    }
+}

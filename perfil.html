@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Perfil - Reservas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        .header {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 25px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: #2196f3;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            width: 45px;
+            height: 45px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #2196f3;
+            color: white;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+        .menu-btn:hover {
+            background: #1976d2;
+        }
+
+
+        /* MENU */
+
+        .menu {
+            position: absolute;
+
+            top: 70px;
+            right: 20px;
+
+            width: 230px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,.18);
+
+            padding: 10px;
+
+            display: none;
+        }
+
+        .menu.active {
+            display: block;
+        }
+
+        .menu a,
+        .menu button {
+            display: block;
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+            background: transparent;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            color: #333;
+
+            font-size: 15px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+        .menu a:hover,
+        .menu button:hover {
+            background: #f0f5ff;
+            color: #2196f3;
+        }
+
+        .menu .cerrar {
+            color: #e53935;
+        }
+
+
+        /* CONTENIDO */
+
+        .contenido {
+            max-width: 900px;
+
+            margin: 40px auto;
+
+            padding: 20px;
+        }
+
+        .titulo {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+        .titulo h1 {
+            margin-bottom: 10px;
+        }
+
+        .titulo p {
+            color: #777;
+        }
+
+
+        /* TARJETA PERFIL */
+
+        .perfil-card {
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            box-shadow: 0 5px 25px rgba(0,0,0,.08);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #2196f3;
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 45px;
+        }
+
+        .nombre {
+            text-align: center;
+
+            font-size: 25px;
+            font-weight: bold;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* DATOS */
+
+        .dato {
+            padding: 18px 0;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+        .dato-titulo {
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+        .dato-valor {
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+
+        /* BOTÓN */
+
+        .volver {
+            display: block;
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            text-align: center;
+
+            border-radius: 10px;
+
+            background: #2196f3;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .volver:hover {
+            background: #1976d2;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .contenido {
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .perfil-card {
+                padding: 25px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="logo">
+            ✈️ Reservas
+        </div>
+
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+        <!-- MENU -->
+
+        <nav
+            class="menu"
+            id="menu"
+        >
+
+            <a href="usuario.html">
+                🏠 Inicio
+            </a>
+
+            <a href="usuario.html#reservar">
+                📅 Reservar viaje
+            </a>
+
+            <a href="usuario.html#reservas">
+                🎫 Mis reservas
+            </a>
+
+            <a href="perfil.html">
+                👤 Mi perfil
+            </a>
+
+            <button
+                class="cerrar"
+                id="cerrarSesion"
+                type="button"
+            >
+                🚪 Cerrar sesión
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="contenido">
+
+        <div class="titulo">
+
+            <h1>
+                👤 Mi perfil
+            </h1>
+
+            <p>
+                Información de tu cuenta
+            </p>
+
+        </div>
+
+
+        <section class="perfil-card">
+
+            <div class="avatar">
+                👤
+            </div>
+
+            <div
+                class="nombre"
+                id="nombreUsuario"
+            >
+                Usuario
+            </div>
+
+
+            <div class="dato">
+
+                <div class="dato-titulo">
+                    Nombre completo
+                </div>
+
+                <div
+                    class="dato-valor"
+                    id="perfilNombre"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="dato">
+
+                <div class="dato-titulo">
+                    Correo electrónico
+                </div>
+
+                <div
+                    class="dato-valor"
+                    id="perfilEmail"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="dato">
+
+                <div class="dato-titulo">
+                    Número de teléfono
+                </div>
+
+                <div
+                    class="dato-valor"
+                    id="perfilTelefono"
+                >
+                    -
+                </div>
+
+            </div>
+
+
+            <div class="dato">
+
+                <div class="dato-titulo">
+                    Tipo de cuenta
+                </div>
+
+                <div
+                    class="dato-valor"
+                    id="perfilTipo"
+                >
+                    Usuario
+                </div>
+
+            </div>
+
+
+            <a
+                href="usuario.html"
+                class="volver"
+            >
+                ← Volver a mi página
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        // ==========================
+        // COMPROBAR SESIÓN
+        // ==========================
+
+        const usuario =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        if (!usuario) {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        // ==========================
+        // MOSTRAR INFORMACIÓN
+        // ==========================
+
+        if (usuario) {
+
+            document.getElementById(
+                "nombreUsuario"
+            ).textContent =
+                usuario.nombre;
+
+            document.getElementById(
+                "perfilNombre"
+            ).textContent =
+                usuario.nombre;
+
+            document.getElementById(
+                "perfilEmail"
+            ).textContent =
+                usuario.email;
+
+            document.getElementById(
+                "perfilTelefono"
+            ).textContent =
+                usuario.telefono;
+
+            document.getElementById(
+                "perfilTipo"
+            ).textContent =
+                usuario.role === "admin"
+                    ? "Administrador"
+                    : "Usuario";
+
+        }
+
+
+        // ==========================
+        // MENÚ
+        // ==========================
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const menu =
+            document.getElementById("menu");
+
+
+        menuBtn.addEventListener(
+            "click",
+            function () {
+
+                menu.classList.toggle("active");
+
+            }
+        );
+
+
+        // Cerrar al tocar fuera
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    !menu.contains(event.target) &&
+                    !menuBtn.contains(event.target)
+                ) {
+
+                    menu.classList.remove("active");
+
+                }
+
+            }
+        );
+
+
+        // ==========================
+        // CERRAR SESIÓN
+        // ==========================
+
+        document
+            .getElementById("cerrarSesion")
+            .addEventListener(
+                "click",
+                function () {
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+    </script>
+
+</body>
+</html>
